@@ -47,7 +47,8 @@ def replace_non_numeric(df):
     df["Sex"] = df["Sex"].apply(lambda sex: 0 if sex == "male" else 1)
     df["Embarked"] = df["Embarked"].apply(lambda port: 0 if port == "S" else 1 if port == "C" else 2)
     df["CabinNum"] = df["Cabin"].apply(cabin_to_even_or_odd)
-    df["CabinLet"] = df["Cabin"].apply(cabin_to_letter)    
+    df["CabinLet"] = df["Cabin"].apply(cabin_to_letter)  
+    df['Fare'] = df['Fare'].apply(lambda fare: 0 if math.isnan(fare) else fare)
     df['Age'] = df['Age'].apply(lambda a: 80 if math.isnan(a) else a)
     return df
 
@@ -57,7 +58,10 @@ columns = ['Pclass', 'Sex', 'Age', 'Fare', 'CabinNum', 'CabinLet', 'Embarked']
 
 labels = df['Survived'].values
 features = df[list(columns)].values
-features_test = df[list(columns)].values
+features_test = df_test[list(columns)].values
+print(df_test[list(columns)])
+with pd.option_context('display.max_rows', None, 'display.max_columns', 13):
+    print(df_test[list(columns)])
 X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size = 0.3, random_state=21, stratify=labels)
 
 
